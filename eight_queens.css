@@ -1,0 +1,16 @@
+#canvas {
+  border: 1px solid #aaaaaa;
+}
+
+#container {
+  text-align: center;
+}
+
+#solve {
+  display: block;
+  width: 14em;
+  height: 3em;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 1em;
+}
