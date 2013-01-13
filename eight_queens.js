@@ -1,4 +1,4 @@
-/*global $:true, console:true, alert:true, _:true, Image:true*/
+/*global $:true, console:true, _:true, Image:true*/
 
 (function () {
   'use strict';
@@ -120,13 +120,7 @@
     canvas.width = size;
     canvas.height = size;
 
-    var context;
-
-    if (canvas.getContext) {
-      context = canvas.getContext('2d');
-    } else {
-      alert('Canvas is not supported in your browser');
-    }
+    var context = canvas.getContext('2d');
 
     reset(context);
 
