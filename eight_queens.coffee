@@ -62,8 +62,7 @@ class ChessBoard
     img.onload = -> ctx.drawImage img, xPos, yPos, s, s
 
   solve: ->
-    solution = new Solution
-    solution.findFor(@n)
+    findSolution(@n)
 
 
 class Solution
@@ -84,7 +83,7 @@ class Solution
     return true if x1 - y1 == x2 - y2 or x1 + y1 == x2 + y2
     false
 
-  findFor: (n) ->
+findSolution = (n) ->
     rowsOrder = [0...n].sort -> 0.5 - Math.random()
     positions = ([0, i] for i in [0...n])
 
@@ -96,7 +95,6 @@ class Solution
       partialSolution = ([positions[y][0], y] for y in completedRows)
 
       if (new Solution(partialSolution)).correct()
-        # break if rowIdx == n
         rowIdx += 1
       else
         while positions[rowsOrder[rowIdx]][0] == n - 1
