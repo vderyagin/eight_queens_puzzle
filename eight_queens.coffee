@@ -26,12 +26,10 @@ handleSlider = (board) ->
     value: window.chessBoardDimension
     slide: (event, ui) ->
       $('#size').text("Size: #{ui.value}")
-      previousDimension = window.chessBoardDimension
-      if ui.value != previousDimension
-        window.chessBoardDimension = ui.value
-        board.setSize(window.chessBoardDimension)
-        board.renderEmpty()
-        $('#solve').text('Find solution')
+      window.chessBoardDimension = ui.value
+      board.setSize(window.chessBoardDimension)
+      board.renderEmpty()
+      $('#solve').text('Find solution')
 
 
 class ChessBoard
