@@ -14,8 +14,7 @@ jQuery ->
       $('#solve').text('Find solution')
 
   $('#solve').click ->
-    board.renderEmpty()
-    board.renderQueen(x, y) for [x, y] in board.solve()
+    board.solve()
     $(this).text('Find another solution')
 
 
@@ -56,7 +55,9 @@ class ChessBoard
     img.onload = -> ctx.drawImage img, xPos, yPos, s, s
 
   solve: ->
-    findSolution(@size)
+    solution = findSolution(@size)
+    @renderEmpty()
+    @renderQueen(x, y) for [x, y] in solution
 
 
 class Solution
