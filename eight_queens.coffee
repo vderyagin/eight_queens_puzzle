@@ -1,17 +1,24 @@
-this.chessBoardSize = 600
-this.chessBoardDimension = 8
+this.chessBoardSizePx = 600
 
 jQuery ->
   canvas = $('#canvas')[0]
-  canvas.width = window.chessBoardSize
-  canvas.height = window.chessBoardSize
+  canvas.width = window.chessBoardSizePx
+  canvas.height = window.chessBoardSizePx
 
   window.canvasContext = canvas.getContext('2d')
 
-  board = new ChessBoard(window.chessBoardDimension)
+  board = new ChessBoard(8)
   board.renderEmpty()
 
-  handleSlider(board)
+  $('#slider').slider
+    min: 4
+    max: 16
+    value: board.size
+    slide: (_, ui) ->
+      $('#size').text("Size: #{ui.value}")
+      board.setSize(ui.value)
+      board.renderEmpty()
+      $('#solve').text('Find solution')
 
   $('#solve').click ->
     board.renderEmpty()
@@ -19,25 +26,12 @@ jQuery ->
     $(this).text('Find another solution')
 
 
-handleSlider = (board) ->
-  $('#slider').slider
-    min: 4
-    max: 16
-    value: window.chessBoardDimension
-    slide: (event, ui) ->
-      $('#size').text("Size: #{ui.value}")
-      window.chessBoardDimension = ui.value
-      board.setSize(window.chessBoardDimension)
-      board.renderEmpty()
-      $('#solve').text('Find solution')
-
-
 class ChessBoard
   constructor: (n) -> @setSize(n)
   pos: (c) -> c * @tileSize
 
-  setSize: (@n) ->
-    @tileSize = window.chessBoardSize / @n
+  setSize: (@size) ->
+    @tileSize = window.chessBoardSizePx / @size
     @ctx = window.canvasContext
 
   renderTile: (x, y) ->
@@ -46,7 +40,7 @@ class ChessBoard
     @ctx.fillRect(@pos(x), @pos(y), @tileSize, @tileSize)
 
   renderEmpty: ->
-    @renderTile x, y for x in [0...@n] for y in [0...@n]
+    @renderTile x, y for x in [0...@size] for y in [0...@size]
 
   renderQueen: (x, y) ->
     img = new Image
@@ -60,7 +54,7 @@ class ChessBoard
     img.onload = -> ctx.drawImage img, xPos, yPos, s, s
 
   solve: ->
-    findSolution(@n)
+    findSolution(@size)
 
 
 class Solution
