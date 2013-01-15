@@ -9,8 +9,9 @@ jQuery ->
     max: 16
     value: board.size
     slide: (_, ui) ->
-      $('#size').text("Size: #{ui.value}")
-      board.setSize(ui.value)
+      size = ui.value
+      board.setSize(size)
+      $('#size').text("Size: #{size}")
       $('#solve').text('Find solution')
 
   $('#solve').click ->
