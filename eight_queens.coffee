@@ -1,14 +1,8 @@
-this.chessBoardSizePx = 600
-
 jQuery ->
-  canvas = $('#canvas')[0]
-  canvas.width = window.chessBoardSizePx
-  canvas.height = window.chessBoardSizePx
-
-  window.canvasContext = canvas.getContext('2d')
-
-  board = new ChessBoard(8)
-  board.renderEmpty()
+  board = new ChessBoard
+    size: 8
+    sizePx: 600
+    canvas: $('#canvas')[0]
 
   $('#slider').slider
     min: 4
@@ -17,7 +11,6 @@ jQuery ->
     slide: (_, ui) ->
       $('#size').text("Size: #{ui.value}")
       board.setSize(ui.value)
-      board.renderEmpty()
       $('#solve').text('Find solution')
 
   $('#solve').click ->
@@ -27,12 +20,21 @@ jQuery ->
 
 
 class ChessBoard
-  constructor: (n) -> @setSize(n)
+  constructor: (opts) ->
+    @sizePx = opts['sizePx']
+
+    canvas = opts['canvas']
+    canvas.width = @sizePx
+    canvas.height = @sizePx
+    @ctx = canvas.getContext('2d')
+
+    @setSize(opts['size'])
+
   pos: (c) -> c * @tileSize
 
   setSize: (@size) ->
-    @tileSize = window.chessBoardSizePx / @size
-    @ctx = window.canvasContext
+    @tileSize = @sizePx / @size
+    @renderEmpty()
 
   renderTile: (x, y) ->
     color = if (x % 2 != y % 2) then '#aaaaaa' else '#eeeeee'
