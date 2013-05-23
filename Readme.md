@@ -1,1 +1,2 @@
-Demo: http://vderyagin.github.io/eight_queens_puzzle/
+- description: http://en.wikipedia.org/wiki/Eight_queens_puzzle
+- demo: http://vderyagin.github.io/eight_queens_puzzle/
