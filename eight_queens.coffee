@@ -11,7 +11,7 @@ jQuery ->
     slide: (_, ui) ->
       size = ui.value
       board.setSize(size)
-      $('#size').text("Size: #{size}")
+      $('#size').text("Size: #{size}×#{size}")
       $('#solve').text('Find solution')
 
   $('#solve').click ->
