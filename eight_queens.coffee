@@ -12,12 +12,30 @@ jQuery ->
       size = ui.value
       board.setSize(size)
       $('#size').text("Size: #{size}×#{size}")
+      [t, u] = solutionsFor(size)
+      $('#solutions').text("Solutions: #{t} total, #{u} unique")
       $('#solve').text('Find solution')
 
   $('#solve').click ->
     board.solve()
     $(this).text('Find another solution')
 
+solutionsFor = (s) ->
+  {
+    4:  ['2', '1']
+    5:  ['10', '2']
+    6:  ['4', '1']
+    7:  ['40', '6']
+    8:  ['92', '12']
+    9:  ['352', '46']
+    10: ['724', '92']
+    11: ['2,680', '341']
+    12: ['14,200', '1,787']
+    13: ['73,712', '9,233']
+    14: ['365,596', '45,752']
+    15: ['2,279,184', '285,053']
+    16: ['14,772,512', '1,846,955']
+  }[s]
 
 class ChessBoard
   constructor: (opts) ->
