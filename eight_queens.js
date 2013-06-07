@@ -31,12 +31,12 @@
       return $(this).text('Find another solution');
     });
     $('#solve').tooltip({
-      title: 'press to solve puzzle',
+      title: 'Press to solve puzzle',
       trigger: 'manual',
       placement: 'left'
     });
     $('.ui-slider-handle').tooltip({
-      title: 'drag to change board size',
+      title: 'Drag to change board size',
       trigger: 'manual',
       placement: 'bottom'
     });
