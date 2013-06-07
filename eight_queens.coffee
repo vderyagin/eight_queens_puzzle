@@ -9,6 +9,7 @@ jQuery ->
     max: 16
     value: board.size
     slide: (_, ui) ->
+      $('.ui-slider-handle').tooltip('destroy')
       size = ui.value
       board.setSize(size)
       $('#size').text("Size: #{size}×#{size}")
@@ -19,6 +20,22 @@ jQuery ->
   $('#solve').click ->
     board.solve()
     $(this).text('Find another solution')
+
+  $('#solve').tooltip
+    title: 'press to solve puzzle'
+    trigger: 'manual'
+    placement: 'left'
+
+  $('.ui-slider-handle').tooltip
+    title: 'drag to change board size'
+    trigger: 'manual'
+    placement: 'bottom'
+
+  $('#solve').one 'click', ->
+    $(this).tooltip('destroy')
+    $('.ui-slider-handle').tooltip('show')
+
+  $('#solve').tooltip('show')
 
 solutionsFor = (s) ->
   {
