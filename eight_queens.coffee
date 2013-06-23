@@ -15,7 +15,7 @@ jQuery ->
 
   $('#slider').slider
     min: 4
-    max: 16
+    max: 26
     value: board.size
     slide: (_, ui) ->
       $('.ui-slider-handle').tooltip('destroy')
