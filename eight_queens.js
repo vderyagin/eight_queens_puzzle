@@ -12,7 +12,7 @@
       canvas: $('#canvas')[0]
     });
     drawSolution = function(event) {
-      $('#solve').text('Find another solution').attr('disabled', false);
+      $('#solve').text('Find another solution').show();
       $('#terminate').hide();
       $('#slider').slider('enable');
       return app.board.drawSolution(event.data);
@@ -42,7 +42,7 @@
       }
     });
     $('#solve').click(function() {
-      $(this).html('<img src="progress_bar.gif">').attr('disabled', true);
+      $(this).hide();
       $('#terminate').show();
       $('#slider').slider('disable');
       return app.worker.postMessage(app.board.getSize());
@@ -51,8 +51,8 @@
       restartWorker();
       app.board.renderEmpty();
       $('#slider').slider('enable');
-      $('#solve').text('Find solution').attr('disabled', false);
-      return $('#terminate').slideUp();
+      $('#solve').text('Find solution').show();
+      return $('#terminate').hide();
     });
     $('#solve').tooltip({
       title: 'Press to solve puzzle',
