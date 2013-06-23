@@ -7,9 +7,7 @@ jQuery ->
     canvas: $('#canvas')[0]
 
   drawSolution = (event) ->
-    $('#solve')
-      .text('Find another solution')
-      .attr('disabled', false)
+    $('#solve').text('Find another solution').show()
     $('#terminate').hide()
     $('#slider').slider('enable')
     app.board.drawSolution(event.data)
@@ -38,9 +36,7 @@ jQuery ->
       $('#solve').text('Find solution')
 
   $('#solve').click ->
-    $(this)
-      .html('<img src="progress_bar.gif">')
-      .attr('disabled', true)
+    $(this).hide()
     $('#terminate').show()
     $('#slider').slider('disable')
     app.worker.postMessage(app.board.getSize())
@@ -49,10 +45,8 @@ jQuery ->
     restartWorker()
     app.board.renderEmpty()
     $('#slider').slider('enable')
-    $('#solve')
-      .text('Find solution')
-      .attr('disabled', false)
-    $('#terminate').slideUp()
+    $('#solve').text('Find solution').show()
+    $('#terminate').hide()
 
   $('#solve').tooltip
     title: 'Press to solve puzzle'
