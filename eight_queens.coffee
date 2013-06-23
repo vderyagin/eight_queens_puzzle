@@ -81,6 +81,8 @@ class ChessBoard
     @tileSize = @sizePx / @size
     @renderEmpty()
 
+  getSize: -> @size
+
   renderTile: (x, y) ->
     color = if (x % 2 != y % 2) then '#aaaaaa' else '#eeeeee'
     @ctx.fillStyle = color
