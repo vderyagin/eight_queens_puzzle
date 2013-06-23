@@ -1,5 +1,7 @@
 jQuery ->
-  board = new ChessBoard
+  app = {}
+
+  app.board = new ChessBoard
     size: 8
     sizePx: 600
     canvas: $('#canvas')[0]
@@ -8,19 +10,28 @@ jQuery ->
     $('#solve')
       .text('Find another solution')
       .attr('disabled', false)
-    board.drawSolution(event.data)
+    $('#terminate').hide()
+    $('#slider').slider('enable')
+    app.board.drawSolution(event.data)
 
-  worker = new Worker('worker.js')
-  worker.addEventListener 'message', drawSolution, false
+  startWorker = ->
+    app.worker = new Worker('worker.js')
+    app.worker.addEventListener 'message', drawSolution, false
+
+  restartWorker = ->
+    app.worker.terminate()
+    startWorker()
+
+  startWorker()
 
   $('#slider').slider
     min: 4
     max: 26
-    value: board.size
+    value: app.board.size
     slide: (_, ui) ->
       $('.ui-slider-handle').tooltip('destroy')
       size = ui.value
-      board.setSize(size)
+      app.board.setSize(size)
       $('#size').text("Size: #{size}×#{size}")
       [t, u] = solutionsFor(size)
       $('#solutions').text("Solutions: #{t} total, #{u} unique")
@@ -30,7 +41,18 @@ jQuery ->
     $(this)
       .html('<img src="progress_bar.gif">')
       .attr('disabled', true)
-    worker.postMessage(board.getSize())
+    $('#terminate').show()
+    $('#slider').slider('disable')
+    app.worker.postMessage(app.board.getSize())
+
+  $('#terminate').click ->
+    restartWorker()
+    app.board.renderEmpty()
+    $('#slider').slider('enable')
+    $('#solve')
+      .text('Find solution')
+      .attr('disabled', false)
+    $('#terminate').slideUp()
 
   $('#solve').tooltip
     title: 'Press to solve puzzle'
@@ -47,6 +69,7 @@ jQuery ->
     $('.ui-slider-handle').tooltip('show')
 
   $('#solve').tooltip('show')
+  $('#terminate').hide()
 
 solutionsFor = (s) ->
   {
