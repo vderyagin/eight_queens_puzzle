@@ -9,7 +9,7 @@
 #solve {
   display: block;
   width: 14em;
-  height: 3em;
+  padding: 1em;
   margin: 1em auto;
 }
 

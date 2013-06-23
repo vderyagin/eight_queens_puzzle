@@ -1,2 +1,2 @@
 all:
-	coffee --map -c eight_queens.coffee
+	coffee --map -c *.coffee
