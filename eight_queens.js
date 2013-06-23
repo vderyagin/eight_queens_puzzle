@@ -4,27 +4,37 @@
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   jQuery(function() {
-    var board, drawSolution, worker;
-    board = new ChessBoard({
+    var app, drawSolution, restartWorker, startWorker;
+    app = {};
+    app.board = new ChessBoard({
       size: 8,
       sizePx: 600,
       canvas: $('#canvas')[0]
     });
     drawSolution = function(event) {
       $('#solve').text('Find another solution').attr('disabled', false);
-      return board.drawSolution(event.data);
+      $('#terminate').hide();
+      $('#slider').slider('enable');
+      return app.board.drawSolution(event.data);
     };
-    worker = new Worker('worker.js');
-    worker.addEventListener('message', drawSolution, false);
+    startWorker = function() {
+      app.worker = new Worker('worker.js');
+      return app.worker.addEventListener('message', drawSolution, false);
+    };
+    restartWorker = function() {
+      app.worker.terminate();
+      return startWorker();
+    };
+    startWorker();
     $('#slider').slider({
       min: 4,
       max: 26,
-      value: board.size,
+      value: app.board.size,
       slide: function(_, ui) {
         var size, t, u, _ref;
         $('.ui-slider-handle').tooltip('destroy');
         size = ui.value;
-        board.setSize(size);
+        app.board.setSize(size);
         $('#size').text("Size: " + size + "×" + size);
         _ref = solutionsFor(size), t = _ref[0], u = _ref[1];
         $('#solutions').text("Solutions: " + t + " total, " + u + " unique");
@@ -33,7 +43,16 @@
     });
     $('#solve').click(function() {
       $(this).html('<img src="progress_bar.gif">').attr('disabled', true);
-      return worker.postMessage(board.getSize());
+      $('#terminate').show();
+      $('#slider').slider('disable');
+      return app.worker.postMessage(app.board.getSize());
+    });
+    $('#terminate').click(function() {
+      restartWorker();
+      app.board.renderEmpty();
+      $('#slider').slider('enable');
+      $('#solve').text('Find solution').attr('disabled', false);
+      return $('#terminate').slideUp();
     });
     $('#solve').tooltip({
       title: 'Press to solve puzzle',
@@ -49,7 +68,8 @@
       $(this).tooltip('destroy');
       return $('.ui-slider-handle').tooltip('show');
     });
-    return $('#solve').tooltip('show');
+    $('#solve').tooltip('show');
+    return $('#terminate').hide();
   });
 
   solutionsFor = function(s) {
