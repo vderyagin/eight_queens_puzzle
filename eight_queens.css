@@ -6,7 +6,7 @@
   text-align: center;
 }
 
-#solve {
+#solve, #terminate {
   display: block;
   width: 14em;
   padding: 1em;
